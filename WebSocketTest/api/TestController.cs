@@ -17,10 +17,9 @@ namespace WebSocketTest.api
     {
         private static Dictionary<string, WebSocket> CONNECT_POOL = new Dictionary<string, WebSocket>();//用户连接池
         private static Dictionary<string, List<MessageInfo>> MESSAGE_POOL = new Dictionary<string, List<MessageInfo>>();//离线消息池
-
-        [Route]
+        
         [HttpGet]
-        public HttpResponseMessage Connect(string nickName)
+        public HttpResponseMessage Connect()
         {
             if (HttpContext.Current.IsWebSocketRequest)
             {
@@ -100,7 +99,7 @@ namespace WebSocketTest.api
                             }
                             else
                             {
-                                Task.Run(() =>
+                                await Task.Run(() =>
                                 {
                                     if (!MESSAGE_POOL.ContainsKey(descUser))//将用户添加至离线消息池中
                                         MESSAGE_POOL.Add(descUser, new List<MessageInfo>());
